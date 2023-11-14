@@ -3,7 +3,7 @@
 #include <time.h>
 
 // ***********************************
-// Algoritmos de ordenacao de array
+// Estrutura para funções de array
 // ***********************************
 
 struct array_function {
@@ -12,94 +12,133 @@ struct array_function {
 };
 
 // ***********************************
-// Algoritmos de ordenacao de array
+// Algoritmos de ordenação de array
 // ***********************************
 
 void quick_sort(int array[], int size) {
-    quick_sort2(array, 0, size - 1);
-}
+    // Alocar dinamicamente uma pilha para armazenar os índices de baixo e alto
+    int *stack = (int *)malloc(size * sizeof(int) * 2);
+    if (stack == NULL) {
+        fprintf(stderr, "Falha na alocação de memória para a pilha\n");
+        exit(EXIT_FAILURE);
+    }
 
-void quick_sort2(int array[], int low, int high) {
-    if (low < high) {
-        // Escolhe o elemento mais à direita como pivô
-        int pivot = array[high];
+    int top = -1;
+    int low = 0;
+    int high = size - 1;
+    int pivot, i, j, temp;
 
-        // Ponteiro para o elemento maior
-        int i = low - 1;
+    // Inserir os índices inicial e final na pilha para iniciar o algoritmo
+    stack[++top] = low;
+    stack[++top] = high;
 
-        // Percorre todos os elementos, compara cada elemento com o pivô
-        for (int j = low; j < high; j++) {
+    // Loop principal do algoritmo quicksort usando a pilha
+    while (top >= 0) {
+        // Retirar os índices de baixo e alto da pilha
+        high = stack[top--];
+        low = stack[top--];
+
+        // Escolher o pivô como o último elemento da parte a ser ordenada
+        pivot = array[high];
+        i = low - 1;
+
+        // Particionar o arrayay ao redor do pivô
+        for (j = low; j <= high - 1; j++) {
             if (array[j] <= pivot) {
-                // Se um elemento menor que o pivô for encontrado, troca com o
-                // elemento maior apontado por i
                 i++;
-                int temp = array[i];
+                // Trocar elementos menores que o pivô para a parte esquerda
+                temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
             }
         }
 
-        // Troca o elemento do pivô com o elemento maior especificado por i
-        int temp = array[i + 1];
+        // Colocar o pivô na posição correta no arrayay ordenado
+        temp = array[i + 1];
         array[i + 1] = array[high];
         array[high] = temp;
 
-        // Ordena recursivamente as submatrizes
-        quick_sort2(array, low, i);
-        quick_sort2(array, i + 2, high);
+        // Se houver elementos à esquerda do pivô, adicionar à pilha
+        if (i - low > 0) {
+            stack[++top] = low;
+            stack[++top] = i;
+        }
+
+        // Se houver elementos à direita do pivô, adicionar à pilha
+        if (high - i > 1) {
+            stack[++top] = i + 2;
+            stack[++top] = high;
+        }
     }
+
+    // Liberar a memória alocada para a pilha
+    free(stack);
 }
 
 void merge_sort(int array[], int size) {
-    merge_sort2(array, 0, size - 1);
-}
+    // Alocar memória para um array temporário do mesmo tamanho do array original
+    int *temp = (int *)malloc(size * sizeof(int));
+    if (temp == NULL) {
+        fprintf(stderr, "Falha na alocação de memória\n");
+        exit(EXIT_FAILURE);
+    }
 
-void merge_sort2(int array[], int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
+    // Variáveis para controle de índices e tamanho das partes a serem mescladas
+    int i, j, k, l1, h1, l2, h2, part_size, flag = 0;
 
-        // Ordena as primeiras e segundas metades
-        merge_sort(array, l, m);
-        merge_sort(array, m + 1, r);
+    // Loop externo para percorrer os diferentes tamanhos de partes a serem mescladas
+    for (part_size = 1; part_size < size; part_size *= 2) {
+        l1 = 0;
+        k = 0;
 
-        // Une as metades ordenadas
-        int n1 = m - l + 1;
-        int n2 = r - m;
-        int L[n1], R[n2];
+        // Loop interno para percorrer e mesclar as partes do array
+        while (l1 + part_size < size) {
+            h1 = l1 + part_size - 1;
+            l2 = h1 + 1;
+            h2 = l2 + part_size - 1;
 
-        // Copia os dados para os arrays temporários L[] e R[]
-        for (int i = 0; i < n1; i++)
-            L[i] = array[l + i];
-        for (int j = 0; j < n2; j++)
-            R[j] = array[m + 1 + j];
-
-        // Une os arrays temporários de volta no array[l..r]
-        int i = 0, j = 0, k = l;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                array[k] = L[i];
-                i++;
-            } else {
-                array[k] = R[j];
-                j++;
+            // Garantir que h2 não ultrapasse o limite do array
+            if (h2 >= size) {
+                h2 = size - 1;
             }
-            k++;
+
+            i = l1;
+            j = l2;
+
+            // Loop para mesclar as partes ordenadamente
+            while (i <= h1 && j <= h2) {
+                if (array[i] <= array[j]) {
+                    temp[k++] = array[i++];
+                } else {
+                    temp[k++] = array[j++];
+                }
+            }
+
+            // Lidar com os elementos restantes de ambas as partes
+            while (i <= h1) {
+                temp[k++] = array[i++];
+            }
+            while (j <= h2) {
+                temp[k++] = array[j++];
+            }
+
+            // Atualizar o índice para a próxima parte
+            l1 = h2 + 1;
         }
 
-        // Copia os elementos restantes de L[], se houver algum
-        while (i < n1) {
-            array[k] = L[i];
-            i++;
-            k++;
+        // Lidar com os elementos restantes no final do array original
+        for (i = l1; k < size; i++) {
+            temp[k++] = array[i];
         }
 
-        // Copia os elementos restantes de R[], se houver algum
-        while (j < n2) {
-            array[k] = R[j];
-            j++;
-            k++;
+        // Atualizar o arrayay original com os elementos ordenados
+        for (i = 0; i < size; i++) {
+            array[i] = temp[i];
         }
     }
+
+    // Liberar a memória alocada para o array temporário
+    free(temp);
 }
 
 void insertion_sort(int array[], int size) {
@@ -164,7 +203,7 @@ struct array_function sort[] = {
 };
 
 // ***********************************
-// Gerador de numeros aleatorios
+// Gerador de números aleatorios
 // ***********************************
 
 void random_init() {
@@ -218,12 +257,18 @@ int main() {
 
     // Iterar sobre os algoritmos de ordenação
     for (int i = 0; i < sizeof(sort) / sizeof(sort[0]); i++) {
-        // Testar o algoritmo de ordenação com tamanhos diferentes de array
-        for (int size = 10; size < 1000000; size *= 10) {
-            // Iterar sobre os métodos de preenchimento do array
-            for (int j = 0; j < sizeof(fill) / sizeof(fill[0]); j++) {
-                // Criar um array para armazenar os dados
-                int array[size];
+        printf("%s\n", sort[i].name);
+        // Iterar sobre os métodos de preenchimento do array
+        for (int j = 0; j < sizeof(fill) / sizeof(fill[0]); j++) {
+            printf("\t%s\n", fill[j].name);
+            // Testar o algoritmo de ordenação com tamanhos diferentes de array
+            for (int size = 1000; size <= 100000; size *= 10) {
+                // Criar um array dinâmico para armazenar os dados
+                int *array = (int *)malloc(size * sizeof(int));
+                if (array == NULL) {
+                    fprintf(stderr, "Falha na alocação de memória\n");
+                    exit(EXIT_FAILURE);
+                }
 
                 // Preencher o array de acordo com o método selecionado
                 fill[j].call(array, size);
@@ -237,11 +282,18 @@ int main() {
                 // Registrar o tempo final
                 clock_t end_time = clock();
 
-                // Calcular o tempo decorrido em segundos
-                double elapsed_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+                // Calcular o tempo decorrido em milissegundos
+                double elapsed_time =
+                    ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
 
-                // Exibir o tempo decorrido em segundos
-                printf("Tempo gasto: %f segundos\n", elapsed_time);
+                // Exibir o tempo decorrido em milissegundos
+                printf(
+                    "\t\tTempo gasto para ordernar um array com %d elementos: "
+                    "%.3f segundos\n",
+                    size, elapsed_time);
+
+                // Liberar a memória alocada para o array
+                free(array);
             }
         }
     }
