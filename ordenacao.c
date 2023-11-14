@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+// TODO(cahian): Increase the size with pow(i, 2)
+// TODO(cahian): Group by fill, sort instead of sort, fill
+
 // ***********************************
 // Estrutura para funções de array
 // ***********************************
@@ -76,17 +79,20 @@ void quick_sort(int array[], int size) {
 }
 
 void merge_sort(int array[], int size) {
-    // Alocar memória para um array temporário do mesmo tamanho do array original
+    // Alocar memória para um array temporário do mesmo tamanho
+    // do array original
     int *temp = (int *)malloc(size * sizeof(int));
     if (temp == NULL) {
         fprintf(stderr, "Falha na alocação de memória\n");
         exit(EXIT_FAILURE);
     }
 
-    // Variáveis para controle de índices e tamanho das partes a serem mescladas
+    // Variáveis para controle de índices e tamanho das partes
+    // a serem mescladas
     int i, j, k, l1, h1, l2, h2, part_size, flag = 0;
 
-    // Loop externo para percorrer os diferentes tamanhos de partes a serem mescladas
+    // Loop externo para percorrer os diferentes tamanhos de partes
+    // a serem mescladas
     for (part_size = 1; part_size < size; part_size *= 2) {
         l1 = 0;
         k = 0;
@@ -148,8 +154,8 @@ void insertion_sort(int array[], int size) {
         key = array[i];
         j = i - 1;
 
-        // Move os elementos do array[0..i-1] que são maiores que a chave para
-        // uma posição à frente de sua posição atual
+        // Move os elementos do array[0..i-1] que são maiores que a chave
+        // para uma posição à frente de sua posição atual
         while (j >= 0 && array[j] > key) {
             array[j + 1] = array[j];
             j = j - 1;
