@@ -261,7 +261,7 @@ int main() {
         for (int i = 0; i < sizeof(sort) / sizeof(sort[0]); i++) {
             printf("\t%s\n", sort[i].name);
             // Testar o algoritmo de ordenação com tamanhos diferentes de array
-            for (int size = 1024; size <= 2097152; size *= 2) {
+            for (int size = 1024; size <= 262144; size *= 2) {
                 // Criar um array dinâmico para armazenar os dados
                 int *array = (int *)malloc(size * sizeof(int));
                 if (array == NULL) {
