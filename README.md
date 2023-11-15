@@ -43,7 +43,9 @@ fazer a comparação até o momento estão abaixo:
 
 ## Resultado
 
-Os resultados da performance desses algoritmos na máquina abaixo:
+Os resultados da performance desses algoritmos na máquina abaixo, estão contidos
+no arquivo [resultados.txt](https://github.com/cahian/APS2023-2/blob/main/resultado.txt)
+presente neste repositório:
 
 ```
 OS: Ubuntu 22.04.3 LTS x86_64 
@@ -53,9 +55,6 @@ CPU: Intel i5-8265U (8) @ 3.900GHz
 GPU: Intel WhiskeyLake-U GT2 [UHD Graphics 620] 
 Memory: 7794MiB 
 ```
-
-estão contidos no arquivo [resultados.txt](https://github.com/cahian/APS2023-2/blob/main/resultado.txt)
-presente neste repositório.
 
 ## Licença
 
