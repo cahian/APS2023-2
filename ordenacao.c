@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-// TODO(cahian): Increase the size with pow(i, 2)
-// TODO(cahian): Group by fill, sort instead of sort, fill
-
 // ***********************************
 // Estrutura para funções de array
 // ***********************************
@@ -79,20 +76,17 @@ void quick_sort(int array[], int size) {
 }
 
 void merge_sort(int array[], int size) {
-    // Alocar memória para um array temporário do mesmo tamanho
-    // do array original
+    // Alocar memória para um array temporário do mesmo tamanho do array original
     int *temp = (int *)malloc(size * sizeof(int));
     if (temp == NULL) {
         fprintf(stderr, "Falha na alocação de memória\n");
         exit(EXIT_FAILURE);
     }
 
-    // Variáveis para controle de índices e tamanho das partes
-    // a serem mescladas
+    // Variáveis para controle de índices e tamanho das partes a serem mescladas
     int i, j, k, l1, h1, l2, h2, part_size, flag = 0;
 
-    // Loop externo para percorrer os diferentes tamanhos de partes
-    // a serem mescladas
+    // Loop externo para percorrer os diferentes tamanhos de partes a serem mescladas
     for (part_size = 1; part_size < size; part_size *= 2) {
         l1 = 0;
         k = 0;
@@ -154,8 +148,8 @@ void insertion_sort(int array[], int size) {
         key = array[i];
         j = i - 1;
 
-        // Move os elementos do array[0..i-1] que são maiores que a chave
-        // para uma posição à frente de sua posição atual
+        // Move os elementos do array[0..i-1] que são maiores que a chave para
+	// uma posição à frente de sua posição atual
         while (j >= 0 && array[j] > key) {
             array[j + 1] = array[j];
             j = j - 1;
@@ -244,7 +238,6 @@ void fill_random(int array[], int size) {
     for (int i = 0; i < size; i++) {
         array[i] = random_generate(size);
     }
-
 }
 
 struct array_function fill[] = {
@@ -261,14 +254,14 @@ int main() {
     // Inicializar o gerador de números aleatórios
     random_init();
 
-    // Iterar sobre os algoritmos de ordenação
-    for (int i = 0; i < sizeof(sort) / sizeof(sort[0]); i++) {
-        printf("%s\n", sort[i].name);
-        // Iterar sobre os métodos de preenchimento do array
-        for (int j = 0; j < sizeof(fill) / sizeof(fill[0]); j++) {
-            printf("\t%s\n", fill[j].name);
+    // Iterar sobre os métodos de preenchimento do array
+    for (int j = 0; j < sizeof(fill) / sizeof(fill[0]); j++) {
+        printf("%s\n", fill[j].name);
+        // Iterar sobre os algoritmos de ordenação
+        for (int i = 0; i < sizeof(sort) / sizeof(sort[0]); i++) {
+            printf("\t%s\n", sort[i].name);
             // Testar o algoritmo de ordenação com tamanhos diferentes de array
-            for (int size = 1000; size <= 100000; size *= 10) {
+            for (int size = 1024; size <= 2097152; size *= 2) {
                 // Criar um array dinâmico para armazenar os dados
                 int *array = (int *)malloc(size * sizeof(int));
                 if (array == NULL) {
