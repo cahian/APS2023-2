@@ -44,7 +44,7 @@ fazer a comparação até o momento estão abaixo:
 ## Resultado
 
 Os resultados da performance desses algoritmos na máquina abaixo, estão contidos
-no arquivo [resultados.txt](https://github.com/cahian/APS2023-2/blob/main/resultado.txt)
+no arquivo [resultado.txt](https://github.com/cahian/APS2023-2/blob/main/resultado.txt)
 presente neste repositório:
 
 ```
