@@ -32,6 +32,31 @@ comparação simples entre os algoritmos de ordenação, caso o array esteja ord
 semi-ordenado e aleatório. Em cada uma dessas situações, o algoritmo é testado
 também com tamanhos diferentes de array.
 
+Apenas parra fins de informação, os algoritmos de ordenação utilizados para
+fazer a comparação até o momento estão abaixo:
+
+- Quick Sort
+- Merge Sort
+- Insertion Sort
+- Selection Sort
+- Bubble Sort 
+
+## Resultado
+
+Os resultados da performance desses algoritmos na máquina abaixo:
+
+```
+OS: Ubuntu 22.04.3 LTS x86_64 
+Host: Inspiron 3583 
+Kernel: 6.2.0-36-generic 
+CPU: Intel i5-8265U (8) @ 3.900GHz 
+GPU: Intel WhiskeyLake-U GT2 [UHD Graphics 620] 
+Memory: 7794MiB 
+```
+
+estão contidos no arquivo [resultados.txt](https://github.com/cahian/APS2023-2/blob/main/resultado.txt)
+presente neste repositório.
+
 ## Licença
 
 [MIT](https://choosealicense.com/licenses/mit/)
