@@ -9,7 +9,7 @@ executa-lo para obter os resultados de tempo de execução em segundos, dos
 algoritmos de ordenação em cada uma das situações que o array se apresenta:
 
 ```shell
-$ gcc -o ordenacao.out -Wall -Wextra -O2 ordenacao.c
+$ gcc -o ordenacao -Wall -Wextra -O2 ordenacao.c
 $ ./ordenacao
 Fill Ordered
 	Quick Sort
