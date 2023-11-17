@@ -42,7 +42,7 @@ void quick_sort(int array[], int size) {
         pivot = array[high];
         i = low - 1;
 
-        // Particionar o arrayay ao redor do pivô
+        // Particionar o array ao redor do pivô
         for (j = low; j <= high - 1; j++) {
             if (array[j] <= pivot) {
                 i++;
@@ -53,7 +53,7 @@ void quick_sort(int array[], int size) {
             }
         }
 
-        // Colocar o pivô na posição correta no arrayay ordenado
+        // Colocar o pivô na posição correta no array ordenado
         temp = array[i + 1];
         array[i + 1] = array[high];
         array[high] = temp;
@@ -131,7 +131,7 @@ void merge_sort(int array[], int size) {
             temp[k++] = array[i];
         }
 
-        // Atualizar o arrayay original com os elementos ordenados
+        // Atualizar o array original com os elementos ordenados
         for (i = 0; i < size; i++) {
             array[i] = temp[i];
         }
