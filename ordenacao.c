@@ -42,7 +42,7 @@ void quick_sort(int array[], int size) {
         pivot = array[high];
         i = low - 1;
 
-        // Particionar o array ao redor do pivô
+        // Particionar o arrayay ao redor do pivô
         for (j = low; j <= high - 1; j++) {
             if (array[j] <= pivot) {
                 i++;
@@ -53,7 +53,7 @@ void quick_sort(int array[], int size) {
             }
         }
 
-        // Colocar o pivô na posição correta no array ordenado
+        // Colocar o pivô na posição correta no arrayay ordenado
         temp = array[i + 1];
         array[i + 1] = array[high];
         array[high] = temp;
@@ -131,7 +131,7 @@ void merge_sort(int array[], int size) {
             temp[k++] = array[i];
         }
 
-        // Atualizar o array original com os elementos ordenados
+        // Atualizar o arrayay original com os elementos ordenados
         for (i = 0; i < size; i++) {
             array[i] = temp[i];
         }
@@ -139,43 +139,6 @@ void merge_sort(int array[], int size) {
 
     // Liberar a memória alocada para o array temporário
     free(temp);
-}
-
-void insertion_sort(int array[], int size) {
-    int i, key, j;
-
-    for (i = 1; i < size; i++) {
-        key = array[i];
-        j = i - 1;
-
-        // Move os elementos do array[0..i-1] que são maiores que a chave para
-	// uma posição à frente de sua posição atual
-        while (j >= 0 && array[j] > key) {
-            array[j + 1] = array[j];
-            j = j - 1;
-        }
-        array[j + 1] = key;
-    }
-}
-
-void selection_sort(int array[], int size) {
-    int i, j, min_index;
-
-    // Move a fronteira do subarray não ordenado uma posição por vez
-    for (i = 0; i < size - 1; i++) {
-        // Encontra o elemento mínimo no array não ordenado
-        min_index = i;
-        for (j = i + 1; j < size; j++) {
-            if (array[j] < array[min_index]) {
-                min_index = j;
-            }
-        }
-
-        // Troca o elemento mínimo encontrado com o primeiro elemento
-        int temp = array[min_index];
-        array[min_index] = array[i];
-        array[i] = temp;
-    }
 }
 
 void bubble_sort(int array[], int size) {
@@ -197,8 +160,6 @@ void bubble_sort(int array[], int size) {
 struct array_function sort[] = {
     {quick_sort, "Quick Sort"},
     {merge_sort, "Merge Sort"},
-    {insertion_sort, "Insertion Sort"},
-    {selection_sort, "Selection Sort"},
     {bubble_sort, "Bubble Sort"},
 };
 
@@ -214,37 +175,11 @@ int random_generate(int max) {
     return rand() % max + 1;
 }
 
-// ***********************************
-// Sistema de preenchimento de array 
-// ***********************************
-
-void fill_ordered(int array[], int size) {
-    for (int i = 0; i < size; i++) {
-        array[i] = i + 1;
-    }
-}
-
-void fill_semiordered(int array[], int size) {
-    for (int i = 0; i < size; i++) {
-        if (random_generate(2) == 1) {
-            array[i] = random_generate(size);
-        } else {
-            array[i] = i + 1;
-        }
-    }
-}
-
 void fill_random(int array[], int size) {
     for (int i = 0; i < size; i++) {
         array[i] = random_generate(size);
     }
 }
-
-struct array_function fill[] = {
-    {fill_ordered, "Fill Ordered"},
-    {fill_semiordered, "Fill Semiordered"},
-    {fill_random, "Fill Random"},
-};
 
 // ***********************************
 // Função principal
@@ -254,46 +189,43 @@ int main() {
     // Inicializar o gerador de números aleatórios
     random_init();
 
-    // Iterar sobre os métodos de preenchimento do array
-    for (int j = 0; j < sizeof(fill) / sizeof(fill[0]); j++) {
-        printf("%s\n", fill[j].name);
-        // Iterar sobre os algoritmos de ordenação
-        for (int i = 0; i < sizeof(sort) / sizeof(sort[0]); i++) {
-            printf("\t%s\n", sort[i].name);
-            // Testar o algoritmo de ordenação com tamanhos diferentes de array
-            for (int size = 1024; size <= 262144; size *= 2) {
-                // Criar um array dinâmico para armazenar os dados
-                int *array = (int *)malloc(size * sizeof(int));
-                if (array == NULL) {
-                    fprintf(stderr, "Falha na alocação de memória\n");
-                    exit(EXIT_FAILURE);
-                }
-
-                // Preencher o array de acordo com o método selecionado
-                fill[j].call(array, size);
-
-                // Registrar o tempo inicial
-                clock_t start_time = clock();
-
-                // Chamar a função de ordenação selecionada
-                sort[i].call(array, size);
-
-                // Registrar o tempo final
-                clock_t end_time = clock();
-
-                // Calcular o tempo decorrido em milissegundos
-                double elapsed_time =
-                    ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
-
-                // Exibir o tempo decorrido em milissegundos
-                printf(
-                    "\t\tTempo gasto para ordernar um array com %d elementos: "
-                    "%.3f segundos\n",
-                    size, elapsed_time);
-
-                // Liberar a memória alocada para o array
-                free(array);
+    // Iterar sobre os algoritmos de ordenação
+    for (int i = 0; i < sizeof(sort) / sizeof(sort[0]); i++) {
+        printf("%s\n", sort[i].name);
+        // Testar o algoritmo de ordenação com tamanhos diferentes de array
+        int sizes[] = {10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000};
+        for (int j = 0; j < sizeof(sizes) / sizeof(sizes[0]); j++) {
+            // Criar um array dinâmico para armazenar os dados
+            int *array = (int *)malloc(sizes[j] * sizeof(int));
+            if (array == NULL) {
+                fprintf(stderr, "Falha na alocação de memória\n");
+                exit(EXIT_FAILURE);
             }
+
+            // Preencher o array de acordo com o método selecionado
+            fill_random(array, sizes[j]);
+
+            // Registrar o tempo inicial
+            clock_t start_time = clock();
+
+            // Chamar a função de ordenação selecionada
+            sort[i].call(array, sizes[j]);
+
+            // Registrar o tempo final
+            clock_t end_time = clock();
+
+            // Calcular o tempo decorrido em milissegundos
+            double elapsed_time =
+                ((double)(end_time - start_time)) / CLOCKS_PER_SEC * 1000.0;
+
+            // Exibir o tempo decorrido em milissegundos
+            printf(
+                "\tTempo gasto para ordernar um array com %d elementos: "
+                "%f milissegundos\n",
+                sizes[j], elapsed_time);
+
+            // Liberar a memória alocada para o array
+            free(array);
         }
     }
 
